@@ -85,27 +85,37 @@
       Dev: <a href="https://t.me/siir_pirex" target="_blank">@siir_pirex</a> | <a href="https://t.me/bradoox" target="_blank">@bradoox</a>
     </div>
   </div>
+
   <script>
     function sendLikes() {
       const uid = document.getElementById("uid").value.trim();
       const responseDiv = document.getElementById("response");
 
+      // التحقق من إدخال الـ UID
       if (!uid) {
         responseDiv.innerHTML = "<span style='color:red;'>Please enter a UID.</span>";
         return;
       }
 
+      // عرض رسالة انتظار
       responseDiv.innerHTML = "<span style='color:yellow;'>Sending likes, please wait...</span>";
 
-      // إرسال الطلب إلى proxy.php بدلاً من الـ API مباشرة
+      // استدعاء proxy.php بدلاً من الاتصال مباشرة بـ API
       fetch(`/proxy.php?uid=${uid}&key=brad&count=100`)
         .then(res => res.json())
         .then(data => {
-          responseDiv.innerHTML = `
-            <strong>Response:</strong><br/>
-            <pre>${JSON.stringify(data, null, 2)}</pre>`;
+          // التحقق من وجود خطأ في الاستجابة
+          if (data.error) {
+            responseDiv.innerHTML = `<span style='color:red;'>${data.error}</span>`;
+          } else {
+            // عرض الاستجابة بنجاح
+            responseDiv.innerHTML = `
+              <strong>Response:</strong><br/>
+              <pre>${JSON.stringify(data, null, 2)}</pre>`;
+          }
         })
         .catch(error => {
+          // معالجة الأخطاء في الاتصال
           responseDiv.innerHTML = `
             <span style='color:red;'>An error occurred while sending likes.</span>
             <br><small>${error.message}</small>
@@ -114,4 +124,4 @@
     }
   </script>
 </body>
-  </html>
+</html>
