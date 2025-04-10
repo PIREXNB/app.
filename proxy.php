@@ -32,6 +32,12 @@ if (curl_errno($ch)) {
 
 curl_close($ch);
 
+// فحص إذا كانت الاستجابة ليست JSON صحيحة
+if ($response[0] == '<') {
+    echo json_encode(['error' => 'Unexpected HTML response from the API. Response: ' . $response]);
+    exit;
+}
+
 // إرجاع الاستجابة بتنسيق JSON
 echo $response;
 ?>
