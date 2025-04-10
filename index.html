@@ -1,90 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Free Fire Like Sender</title>
     <style>
+        /* بعض التنسيق الأساسي */
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: url('https://wallpapercave.com/wp/wp4696586.jpg') no-repeat center center fixed;
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: white;
-        }
-
-        .container {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
             text-align: center;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            padding: 50px;
         }
-
-        h1 {
-            margin-bottom: 20px;
-            color: #00f0ff;
-        }
-
-        input {
-            width: 90%;
-            padding: 12px;
-            border: none;
+        .container {
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 0 auto;
             border-radius: 10px;
-            margin-bottom: 15px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            width: 80%;
             font-size: 16px;
         }
-
-        button {
-            background-color: #00f0ff;
-            color: black;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #00aaff;
-        }
-
         .result {
             margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: left;
-            word-wrap: break-word;
-            font-family: monospace;
-            font-size: 14px;
+            color: green;
         }
-
         .dev {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #ccc;
-        }
-
-        .dev a {
-            color: #ff00ff;
-            text-decoration: none;
-        }
-
-        .dev a:hover {
-            text-decoration: underline;
+            margin-top: 20px;
+            font-size: 12px;
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h1>Free Fire Like Sender</h1>
@@ -97,6 +47,7 @@
                 target="_blank">@bradoox</a>
         </div>
     </div>
+
     <script>
         function sendLikes() {
             const uid = document.getElementById("uid").value.trim();
@@ -111,14 +62,25 @@
 
             // الاتصال بوظيفة الـ proxy عبر رابط Vercel
             fetch(`/api/proxy?uid=${uid}`)
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return res.json();  // تحويل الاستجابة إلى JSON
+                })
                 .then(data => {
+                    // عرض الاستجابة من API بشكل منظم
                     responseDiv.innerHTML = `
-                        <strong>Response:</strong><br/>
-                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <strong>Likes Added:</strong> ${data.likes_added} <br/>
+                        <strong>Likes Before:</strong> ${data.likes_before} <br/>
+                        <strong>Likes After:</strong> ${data.likes_after} <br/>
+                        <strong>Player Name:</strong> ${data.name} <br/>
+                        <strong>Level:</strong> ${data.level} <br/>
+                        <strong>Region:</strong> ${data.region} <br/>
                     `;
                 })
                 .catch(error => {
+                    // عرض رسالة خطأ مفصلة في حال وقوع أي خطأ
                     responseDiv.innerHTML = `
                         <span style='color:red;'>An error occurred while sending likes.</span>
                         <br><small>${error.message}</small>
@@ -127,5 +89,4 @@
         }
     </script>
 </body>
-
 </html>
