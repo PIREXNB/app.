@@ -1,108 +1,127 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Free Fire Like Sender</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-image: url('https://wallpapercave.com/wp/wp8444930.jpg');
+      background: url('https://wallpapercave.com/wp/wp4696586.jpg') no-repeat center center fixed;
       background-size: cover;
-      background-position: center;
-      height: 100vh;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: #fff;
-      text-shadow: 1px 1px 5px #000;
-    }.container {
-  background-color: rgba(0, 0, 0, 0.6);
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
-  text-align: center;
-}
+      height: 100vh;
+      color: white;
+    }
 
-input {
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: none;
-  width: 250px;
-  margin-bottom: 15px;
-}
+    .container {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    }
 
-button {
-  background-color: #00eaff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #000;
-  font-weight: bold;
-  transition: 0.3s ease;
-}
+    h1 {
+      margin-bottom: 20px;
+      color: #00f0ff;
+    }
 
-button:hover {
-  background-color: #00bcd4;
-}
+    input {
+      width: 90%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
 
-.response-box {
-  margin-top: 20px;
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 15px;
-  border-radius: 10px;
-  color: #00ffc8;
-  font-weight: 600;
-  word-break: break-word;
-}
+    button {
+      background-color: #00f0ff;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
 
-.footer {
-  margin-top: 20px;
-  font-size: 0.9rem;
-  color: #ff00ff;
-}
+    button:hover {
+      background-color: #00aaff;
+    }
 
+    .result {
+      margin-top: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: left;
+      word-wrap: break-word;
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    .dev {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .dev a {
+      color: #ff00ff;
+      text-decoration: none;
+    }
+
+    .dev a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Free Fire Like Sender</h2>
-    <input type="text" id="uid" placeholder="Enter UID">
-    <br>
+    <h1>Free Fire Like Sender</h1>
+    <input type="text" id="uid" placeholder="Enter your UID" />
+    <br />
     <button onclick="sendLikes()">Send Likes</button>
-    <div class="response-box" id="responseBox"></div>
-    <div class="footer">Dev: @siir_pirex | @bradoox</div>
-  </div>  <script>
-    async function sendLikes() {
-      const uid = document.getElementById('uid').value.trim();
-      const responseBox = document.getElementById('responseBox');
+    <div id="response" class="result"></div>
+    <div class="dev">
+      Dev: <a href="https://t.me/siir_pirex" target="_blank">@siir_pirex</a> | <a href="https://t.me/bradoox" target="_blank">@bradoox</a>
+    </div>
+  </div>
+
+  <script>
+    function sendLikes() {
+      const uid = document.getElementById("uid").value.trim();
+      const responseDiv = document.getElementById("response");
+
       if (!uid) {
-        responseBox.innerText = 'Please enter a UID';
+        responseDiv.innerHTML = "<span style='color:red;'>Please enter a UID.</span>";
         return;
       }
 
-      responseBox.innerText = 'Sending likes...';
-      try {
-        const res = await fetch(`http://207.180.223.38:5008/like?uid=${uid}&key=brad&count=100`);
-        const data = await res.json();
-        responseBox.innerHTML = `
-          <strong>Name:</strong> ${data.name}<br>
-          <strong>UID:</strong> ${data.uid}<br>
-          <strong>Region:</strong> ${data.region}<br>
-          <strong>Level:</strong> ${data.level}<br>
-          <strong>Likes Before:</strong> ${data.likes_before}<br>
-          <strong>Likes Added:</strong> ${data.likes_added}<br>
-          <strong>Likes After:</strong> ${data.likes_after}<br>
-          <strong>Failed Likes:</strong> ${data.failed_likes}
-        `;
-      } catch (err) {
-        responseBox.innerText = 'An error occurred while sending likes.';
-      }
+      responseDiv.innerHTML = "<span style='color:yellow;'>Sending likes, please wait...</span>";
+
+      fetch(`http://207.180.223.38:5008/like?uid=${uid}&key=brad&count=100`)
+        .then(res => res.json())
+        .then(data => {
+          responseDiv.innerHTML = `
+            <strong>Response:</strong><br/>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        })
+        .catch(error => {
+          responseDiv.innerHTML = `
+            <span style='color:red;'>An error occurred while sending likes.</span>
+            <br><small>${error.message}</small>
+          `;
+        });
     }
-  </script></body>
-      </html>
+  </script>
+</body>
+  </html>
