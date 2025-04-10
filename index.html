@@ -16,7 +16,6 @@
       height: 100vh;
       color: white;
     }
-
     .container {
       background-color: rgba(0, 0, 0, 0.7);
       padding: 30px;
@@ -26,12 +25,10 @@
       max-width: 400px;
       box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
     }
-
     h1 {
       margin-bottom: 20px;
       color: #00f0ff;
     }
-
     input {
       width: 90%;
       padding: 12px;
@@ -40,7 +37,6 @@
       margin-bottom: 15px;
       font-size: 16px;
     }
-
     button {
       background-color: #00f0ff;
       color: black;
@@ -51,11 +47,9 @@
       font-size: 16px;
       transition: background 0.3s ease;
     }
-
     button:hover {
       background-color: #00aaff;
     }
-
     .result {
       margin-top: 20px;
       background-color: rgba(255, 255, 255, 0.1);
@@ -66,18 +60,15 @@
       font-family: monospace;
       font-size: 14px;
     }
-
     .dev {
       margin-top: 30px;
       font-size: 14px;
       color: #ccc;
     }
-
     .dev a {
       color: #ff00ff;
       text-decoration: none;
     }
-
     .dev a:hover {
       text-decoration: underline;
     }
@@ -94,7 +85,6 @@
       Dev: <a href="https://t.me/siir_pirex" target="_blank">@siir_pirex</a> | <a href="https://t.me/bradoox" target="_blank">@bradoox</a>
     </div>
   </div>
-
   <script>
     function sendLikes() {
       const uid = document.getElementById("uid").value.trim();
@@ -107,13 +97,13 @@
 
       responseDiv.innerHTML = "<span style='color:yellow;'>Sending likes, please wait...</span>";
 
-      fetch(`http://207.180.223.38:5008/like?uid=${uid}&key=brad&count=100`)
+      // إرسال الطلب إلى proxy.php بدلاً من الـ API مباشرة
+      fetch(`/proxy.php?uid=${uid}&key=brad&count=100`)
         .then(res => res.json())
         .then(data => {
           responseDiv.innerHTML = `
             <strong>Response:</strong><br/>
-            <pre>${JSON.stringify(data, null, 2)}</pre>
-          `;
+            <pre>${JSON.stringify(data, null, 2)}</pre>`;
         })
         .catch(error => {
           responseDiv.innerHTML = `
